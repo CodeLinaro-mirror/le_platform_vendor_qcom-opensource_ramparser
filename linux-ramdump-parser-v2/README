@@ -8,7 +8,7 @@ such as process stacks, IRQ and workqueue information.
 
 What does this tool need?
 ----------------------------------
-1) Python. This tool has been tested with Python 2.6.5 on both Linux and Windows
+1) Python. This tool has been tested with Python 3.8.10 on both Linux and Windows
 1) a set of RAM dumps. Ideally, the load location of each dump as well.
 2) The corresponding vmlinux file
 
@@ -51,16 +51,16 @@ to see the full list of features that can be parsed.
 
 System requirements
 -------------------------------
-Python 2.7 is required to run this tool. It can be downloaded and
+Python 3 is required to run this tool. It can be downloaded and
 installed from https://www.python.org/ or through your system's
 software package manager.
 
-If you already have python2.7 installed but it's not the default
-python2 interpreter on your system (e.g. if python2 points to
-python2.6) then you'll need to invoke the script with python2.7
+If you already have python3 installed but it's not the default
+python interpreter on your system (e.g. if python points to
+python2.6) then you'll need to invoke the script with python3
 explicitly, for example:
 
-    $ python2.7 $(which ramparse.py) ...
+    $ python3 $(which ramparse.py) ...
 
 instead of:
 
@@ -111,6 +111,12 @@ tracecmdtool - absolute path to the trace-cmd tool that converts the binary
 
 Note that local_settings.py is just a python file so the file may take advantage
 of python features.
+
+Setting up the board-level information and extended functionality
+-------------------------------
+Before you start parsing, ramparser needs to set up board-level information, because board-level information contains base addresses for different platforms. The board-level information is defined in board_def.py in the ramparser-plugin/ directory. This directory also contains extensions parser such as the hyp_trace, and so on. You need to create a symbolic link in the ramparser/linux-ramdump-parser-v2/ directory, pointing to the ramparser-plugin/ directory to complete the setup.
+
+example: ln -s /.../ramparser-plugin /.../ramparser/linux-ramdump-parser-v2/extensions
 
 make_rpm.sh
 -------------------------------
