@@ -17,6 +17,11 @@
 # python3 so we can't allow any python2 print statements to sneak in
 # since they result in syntax errors in python3. By importing
 # print_function we are requiring ourselves to use the python3 syntax.
+
+#Changes from Qualcomm Innovation Center are provided under the following license:
+#
+#Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+#SPDX-License-Identifier: BSD-3-Clause-Clear
 from __future__ import print_function
 
 import sys
@@ -370,7 +375,11 @@ if __name__ == '__main__':
     if options.everything:
         options.qtf = True
 
-    dump = RamDump(options, nm_path, gdb_path, objdump_path,gdb_ndk_path)
+    try:
+        from extensions.RamDump_ext import RamDump_ext
+        dump = RamDump_ext(options, nm_path, gdb_path, objdump_path, gdb_ndk_path)
+    except:
+        dump = RamDump(options, nm_path, gdb_path, objdump_path, gdb_ndk_path)
 
     if options.eval:
         if options.eval == '-':
