@@ -9,6 +9,11 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+#Changes from Qualcomm Innovation Center are provided under the following license:
+#
+#Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+#SPDX-License-Identifier: BSD-3-Clause-Clear
+
 import os
 import platform
 import glob
@@ -103,6 +108,27 @@ def register_parser(longopt, desc, shortopt=None, optional=False):
         return cls
     return wrapper
 
+def replace_parser(longopt, desc, shortopt=None, optional=False):
+    """
+    Replace the existing parser
+    @param longopt: The longopt command line switch for this parser
+    @param desc: A short description of the parser (also shown in the
+        help-text associated with the longopt)
+    @param shortopt: The shortopt command line switch for this parser.
+        This should only be used for maintaining backwards compatibility
+        with legacy parsers.  Otherwise shortopts are reserved for core
+        parser options.
+    @param optional: Indicates the parser is optional and should not be run
+        with ``--everything``
+    @return:
+    """
+    def wrapper(cls):
+        for p in _parsers:
+            if p.longopt == longopt:
+                _parsers[_parsers.index(p)] = ParserConfig(cls, longopt, desc, shortopt, optional)
+        return cls
+
+    return wrapper
 
 def get_parsers():
     """Imports everyone under the ``parsers`` directory. It is expected that
